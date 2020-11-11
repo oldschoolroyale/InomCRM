@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    android:label="ДБ"
+    app:startDestination="@id/fragmentList">
+
+    <fragment
+        android:id="@+id/fragmentList"
+        android:name="com.kaisho.inomcrm.app.fragment.FragmentList"
+        android:label="BRMLab"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_fragmentList_to_updateFragment"
+            app:destination="@id/updateFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_fragmentList_to_dataBaseFragment"
+            app:destination="@id/dataBaseFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.kaisho.inomcrm.app.fragment.UpdateFragment"
+        android:label="Доп. информация">
+        <action
+            android:id="@+id/action_updateFragment_to_fragmentList"
+            app:destination="@id/fragmentList"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right" />
+        <argument
+            android:name="note"
+            app:argType="com.kaisho.inomcrm.app.model.NotePOJO" />
+    </fragment>
+    <fragment
+        android:id="@+id/dataBaseFragment"
+        android:name="com.kaisho.inomcrm.app.fragment.DataBaseFragment"
+        android:label="ДБ"
+        tools:layout="@layout/fragment_data_base">
+        <action
+            android:id="@+id/action_dataBaseFragment_to_fragmentList"
+            app:destination="@id/fragmentList"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+    </fragment>
+</navigation>

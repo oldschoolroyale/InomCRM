@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">InomCRM</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="registration_text">Пожалуйста, введите код страны и номер телефона для регистрации</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="registration">Зарегестрироваться</string>
+    <string name="xxx">XXX</string>
+    <string name="enter_code">Введите код</string>
+    <string name="autorization">Авторизоваться</string>
+    <string name="sms_text">Мы отправили вам смс с кодом подтвержения</string>
+    <string name="settings">Настройки</string>
+    <string name="exit">Выйти</string>
+    <string name="empty_text">Тут пока пусто</string>
+    <string name="add_smth">Добавьте карточку из базы данных</string>
+    <string name="task">Список задач</string>
+    <string name="add_doctor">Добавить врача</string>
+    <string name="add_pharmacy">Добавить аптеку</string>
+    <string name="actionbar_spinner">ActionBar Spinner</string>
+    <string name="add">Добавить</string>
+    <string name="pick_date">Выберите дату</string>
+    <string name="data_base">База данных</string>
+    <string name="data_base_title">База данных врачей\n и аптек</string>
+    <string name="medication_list">Список препаратов</string>
+    <string name="description">Описание</string>
+    <string name="start_action">Начать визит</string>
+    <string name="save">Сохранить</string>
+    <string name="stop_action">Окончить визит</string>
+    <string name="good_day">Добрый день!</string>
+    <string name="mission_view">Обзор задач</string>
+    <string name="extras">Дополнения</string>
+    <string name="stock">Остаток</string>
+    <string name="order">Бронь</string>
+    <string name="delete">Удалить</string>
+    <string name="send">Отправить</string>
+    <string name="calculate">Посчитать</string>
+    <string name="prepay_cost">Стоимость предоплаты</string>
+    <string name="location_instucrion">Приступая к работе, приложение отправляет данные на сервер о местоположении. \nКнопкой \'Закончить\' - вы отключаете поток данных. \nP.S: Каждое включение и отключение кнопки записывается в базе данных!</string>
+    <string name="working_on_page">Мы ещё работаем над этой страницей</string>
+    <string name="ty">Благодарим за понимание!</string>
+    <string name="save_comment">Сохранить комментарий</string>
+
+    <string-array name="dataCategory">
+        <item>Doctor</item>
+        <item>Pharmacy</item>
+    </string-array>
+
+    <string-array name="categoryOfMission">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
+    <string-array name="statusOfMission">
+        <item>Активный</item>
+        <item>Не активный</item>
+    </string-array>
+</resources>
