@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.kaisho.inomcrm.app.fragment.loginFragments.RegistrationFragment"
-        android:label="RegistrationFragment" >
+        android:label="Регистрация">
         <action
             android:id="@+id/action_registrationFragment_to_codeSendFragment"
             app:destination="@id/codeSendFragment"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/codeSendFragment"
         android:name="com.kaisho.inomcrm.app.fragment.loginFragments.CodeSendFragment"
-        android:label="CodeSendFragment" >
+        android:label="Отправка кода">
         <action
             android:id="@+id/action_codeSendFragment_to_registrationFragment"
             app:destination="@id/registrationFragment"
@@ -26,7 +26,7 @@
             app:exitAnim="@anim/to_right" />
         <argument
             android:name="code"
-            app:argType="string"
-            android:defaultValue='"null"' />
+            android:defaultValue='"null"'
+            app:argType="string" />
     </fragment>
 </navigation>

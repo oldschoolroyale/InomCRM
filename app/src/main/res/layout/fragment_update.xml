@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.kaisho.inomcrm.app.model.NotePOJO" />
+            type="com.kaisho.inomcrm.app.model.NoteModel" />
 
     </data>
 

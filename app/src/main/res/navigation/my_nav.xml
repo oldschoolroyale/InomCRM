@@ -37,7 +37,7 @@
             app:exitAnim="@anim/to_right" />
         <argument
             android:name="note"
-            app:argType="com.kaisho.inomcrm.app.model.NotePOJO" />
+            app:argType="com.kaisho.inomcrm.app.model.NoteModel" />
     </fragment>
     <fragment
         android:id="@+id/dataBaseFragment"
@@ -49,5 +49,80 @@
             app:destination="@id/fragmentList"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_dataBaseFragment_to_pharmacyAddFragment"
+            app:destination="@id/pharmacyAddFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_dataBaseFragment_to_doctorAddFragment"
+            app:destination="@id/doctorAddFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_dataBaseFragment_to_planFragment"
+            app:destination="@id/planFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_dataBaseFragment_to_editFragment"
+            app:destination="@id/editFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/pharmacyAddFragment"
+        android:name="com.kaisho.inomcrm.app.fragment.dbadd.PharmacyAddFragment"
+        android:label="@string/add_pharmacy"
+        tools:layout="@layout/fragment_pharmacy_add">
+        <action
+            android:id="@+id/action_pharmacyAddFragment_to_dataBaseFragment"
+            app:destination="@id/dataBaseFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/doctorAddFragment"
+        android:name="com.kaisho.inomcrm.app.fragment.dbadd.DoctorAddFragment"
+        android:label="@string/add_doctor"
+        tools:layout="@layout/fragment_doctor_add">
+        <action
+            android:id="@+id/action_doctorAddFragment_to_dataBaseFragment"
+            app:destination="@id/dataBaseFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/planFragment"
+        android:name="com.kaisho.inomcrm.app.fragment.PlanFragment"
+        android:label="Планирование"
+        tools:layout="@layout/fragment_plan">
+        <action
+            android:id="@+id/action_planFragment_to_fragmentList"
+            app:destination="@id/fragmentList"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.kaisho.inomcrm.app.fragment.EditFragment"
+        android:label="@string/edit"
+        tools:layout="@layout/fragment_edit">
+        <action
+            android:id="@+id/action_editFragment_to_dataBaseFragment"
+            app:destination="@id/dataBaseFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+        <argument
+            android:name="model"
+            app:argType="com.kaisho.inomcrm.app.model.DataBasePOJO" />
     </fragment>
 </navigation>

@@ -4,9 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.kaisho.inomcrm.app.data.DataBaseLiveData
 import com.kaisho.inomcrm.app.model.DataBasePOJO
 import com.kaisho.inomcrm.app.room.DatabaseRoom
 import com.kaisho.inomcrm.app.room.repository.DatabaseRepository
+import com.kaisho.inomcrm.app.viewModel.SharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -16,24 +18,24 @@ class DatabaseViewModel(application: Application): AndroidViewModel(application)
         application
     ).getDatabaseDao()
     private val repository: DatabaseRepository
+    var dataPOJO = DataBasePOJO(0)
 
     val getAllData: LiveData<List<DataBasePOJO>>
-    var dataPOJO = DataBasePOJO()
 
     init {
         repository = DatabaseRepository(databaseDao)
         getAllData = repository.getAllData
     }
 
-    fun insertData(dataBasePOJO: DataBasePOJO){
+    fun insertData(dataList: DataBasePOJO){
         viewModelScope.launch(Dispatchers.IO){
-            repository.insertData(dataBasePOJO)
+            repository.insertData(dataList)
         }
     }
 
-    fun deleteData(dataBasePOJO: DataBasePOJO){
+    fun updateData(dataBasePOJO: DataBasePOJO){
         viewModelScope.launch(Dispatchers.IO){
-            repository.delete(dataBasePOJO)
+            databaseDao.updateData(dataBasePOJO)
         }
     }
 
@@ -43,5 +45,8 @@ class DatabaseViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+    fun searchDatabase(): LiveData<List<DataBasePOJO>>{
+        return repository.searchDatabase()
+    }
 
 }

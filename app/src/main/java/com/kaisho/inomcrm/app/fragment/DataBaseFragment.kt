@@ -3,31 +3,27 @@ package com.kaisho.inomcrm.app.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kaisho.inomcrm.R
 import com.kaisho.inomcrm.app.adapter.DataBaseAdapter
-import com.kaisho.inomcrm.app.data.DataBaseLiveData
+import com.kaisho.inomcrm.app.model.AccountPOJO
 import com.kaisho.inomcrm.app.model.DataBasePOJO
-import com.kaisho.inomcrm.app.model.NotePOJO
 import com.kaisho.inomcrm.app.room.viewModel.AccountViewModel
 import com.kaisho.inomcrm.app.room.viewModel.DatabaseViewModel
 import com.kaisho.inomcrm.app.viewModel.SharedViewModel
 import com.kaisho.inomcrm.databinding.FragmentDataBaseBinding
-import kotlinx.android.synthetic.main.fragment_data_base.view.*
 
 
-class DataBaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class DataBaseFragment : Fragment() {
 
     companion object{
-        private lateinit var TOWN : String
-        private lateinit var REGION: String
+        private const val DOCTOR = "Doctor"
+        private const val PHARMACY = "Pharmacy"
     }
 
     //Binding
@@ -39,11 +35,11 @@ class DataBaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val sharedViewModel by viewModels<SharedViewModel>()
     private val databaseViewModel by viewModels<DatabaseViewModel>()
 
-    //LiveData
-    private val liveData = DataBaseLiveData()
 
     //Observer
-    private lateinit var observer: Observer<ArrayList<DataBasePOJO>>
+    private lateinit var searchObserver: Observer<List<DataBasePOJO>>
+    private lateinit var allDataObserver: Observer<List<DataBasePOJO>>
+    private lateinit var accountObserver: Observer<List<AccountPOJO>>
 
     //Adapter
     private lateinit var adapter: DataBaseAdapter
@@ -52,6 +48,7 @@ class DataBaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         _binding = FragmentDataBaseBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
@@ -61,64 +58,74 @@ class DataBaseFragment : Fragment(), AdapterView.OnItemSelectedListener {
         (activity as AppCompatActivity).supportActionBar?.show()
         setHasOptionsMenu(true)
 
-        binding.activityDataBaseFb.setOnClickListener {
-            databaseViewModel.deleteAll()
-        }
-
         //recyclerViewSetUp
         adapter = DataBaseAdapter(databaseViewModel)
         binding.fragmentDataBaseRecyclerView.adapter = adapter
         binding.fragmentDataBaseRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
-        //DataRetrieve
-        observer = Observer {
+        //Observers
+        accountObserver = Observer {
+            sharedViewModel.townArray =
+                it[0].town.toString().split(", ").toTypedArray()
+            sharedViewModel.regionArray =
+                it[0].region.toString().split(", ").toTypedArray()
+        }
+        allDataObserver = Observer {
             sharedViewModel.checkIfDataFragmentEmpty(it)
             adapter.newList(it)
+            if (it.isNotEmpty()){
+                sharedViewModel.insertDataBaseInfo(
+                    it[0].textTown!!,
+                    it[0].textRegion!!,
+                    it[0].textType!!
+                )
+            }
+
         }
-        databaseViewModel.getAllData.observe(viewLifecycleOwner, Observer {
+        searchObserver = Observer {
             sharedViewModel.checkFloatingActionButton(it)
+        }
 
-        })
 
-        accountViewModel.getAllData.observe(viewLifecycleOwner, Observer {
-            REGION = it[0].region.toString().split(", ")[0]
-            TOWN = it[0].town.toString()
-        })
+        //ObserverInit
+        databaseViewModel.searchDatabase().observe(viewLifecycleOwner,
+            searchObserver)
+        databaseViewModel.getAllData.observe(viewLifecycleOwner,
+        allDataObserver)
+        accountViewModel.getAllData.observe(viewLifecycleOwner,
+        accountObserver)
 
-        liveData.observe(viewLifecycleOwner,observer)
+        //Fab click
+        binding.activityDataBasePlanFab.setOnClickListener {
+            findNavController().navigate(R.id.action_dataBaseFragment_to_planFragment)
+        }
 
         return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.data_base_menu, menu)
-        val item = menu.findItem(R.id.data_base_menu_spinner)
-        val spinner = item.actionView as Spinner
-
-        //Spinner Adapter
-        val categoryAdapter : ArrayAdapter<CharSequence> =
-            context?.let { ArrayAdapter.createFromResource(it, R.array.dataCategory, R.layout.custom_spinner) } as ArrayAdapter<CharSequence>
-        categoryAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown)
-        spinner.adapter = categoryAdapter
-
-        spinner.onItemSelectedListener = this
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (parent?.id == R.id.data_base_menu_spinner){
-            liveData.getData(TOWN,
-                REGION,
-                parent.getItemAtPosition(position).toString())
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.data_base_menu_doctor -> {
+                    sharedViewModel.itemSelect(DOCTOR)
+            }
+            R.id.data_base_menu_pharmacy -> {
+                    sharedViewModel.itemSelect(PHARMACY)
+            }
+            R.id.data_base_menu_add_doctor -> findNavController().navigate(R.id.action_dataBaseFragment_to_doctorAddFragment)
+            R.id.data_base_menu_add_pharmacy -> findNavController().navigate(R.id.action_dataBaseFragment_to_pharmacyAddFragment)
         }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        liveData.removeObserver(observer)
         _binding = null
+        databaseViewModel.searchDatabase().removeObserver(searchObserver)
+        databaseViewModel.getAllData.removeObserver(allDataObserver)
+        accountViewModel.getAllData.removeObserver(accountObserver)
     }
 }

@@ -9,10 +9,10 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class DataBasePOJO(
     @PrimaryKey(autoGenerate = true)
-    var uniqueId: Int? = null,
-    var address : String? = null,
-    var id : String? = null,
+    var positionId: Int,
+    var id: String? = null,
     var name : String? = null,
+    var address : String? = null,
     var status : String? = null,
     var phone : String? = null,
     var specialization: String? = null,
@@ -20,5 +20,9 @@ data class DataBasePOJO(
     var state: String? = null,
     var employee: String? = null,
     var owner: String? = null,
-    var isSelected: Boolean = false
+    var isSelected: Int = 0,
+    var time: Int = 0,
+    var textTown: String? = null,
+    var textRegion: String? = null,
+    var textType: String? = null
 ): Parcelable

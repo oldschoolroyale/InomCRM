@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.kaisho.inomcrm.app.model.NotePOJO" />
+            type="com.kaisho.inomcrm.app.model.DataBasePOJO" />
 
 
     </data>
@@ -21,10 +21,10 @@
             android:id="@+id/notes_List_item_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:deleteItem="@{model}"
             app:cardBackgroundColor="@color/light_blue"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
+            android:layout_toStartOf="@id/planListItemTimePicker"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp">
@@ -69,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
+                    android:text="@{model.address}"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +77,18 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/planListItemTimePicker"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:timePicker="@{model}"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_baseline_access_time_24"
+            />
+
+
 
 
     </RelativeLayout>

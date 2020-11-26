@@ -1,28 +1,31 @@
 package com.kaisho.inomcrm.app.databinding
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.TimePickerDialog
 import android.graphics.Color
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+import com.amulyakhare.textdrawable.TextDrawable
+import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.kaisho.inomcrm.R
+import com.kaisho.inomcrm.app.fragment.DataBaseFragmentDirections
+import com.kaisho.inomcrm.app.fragment.FragmentList
 import com.kaisho.inomcrm.app.fragment.FragmentListDirections
 import com.kaisho.inomcrm.app.model.DataBasePOJO
-import com.kaisho.inomcrm.app.model.NotePOJO
-import com.kaisho.inomcrm.app.model.ViewPagerPOJO
+import com.kaisho.inomcrm.app.model.NoteModel
 import com.kaisho.inomcrm.app.room.viewModel.DatabaseViewModel
-import com.squareup.picasso.Picasso
+import com.kaisho.inomcrm.app.viewModel.SharedViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,18 +56,18 @@ class BindingAdapter {
 
        @BindingAdapter("android:deleteItem")
         @JvmStatic
-        fun deleteItem(view: CardView, notePOJO: NotePOJO){
-
+        fun deleteItem(view: LinearLayout, notePOJO: NoteModel){
            //date
-           val yearString: String = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
-           val monthString: String = SimpleDateFormat("M").format(Calendar.getInstance().time)
-           val dayString: String = SimpleDateFormat("d").format(Calendar.getInstance().time)
+           var yearString: String = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+           var monthString: String = SimpleDateFormat("M").format(Calendar.getInstance().time)
+           var dayString: String = SimpleDateFormat("d").format(Calendar.getInstance().time)
 
            //userID
-           val user = FirebaseAuth.getInstance().currentUser?.uid!!
+           var user = FirebaseAuth.getInstance().currentUser?.uid!!
 
             view.setOnClickListener {
-                view.findNavController().navigate(FragmentListDirections.actionFragmentListToUpdateFragment(notePOJO))
+                view.findNavController().navigate(
+                    FragmentListDirections.actionFragmentListToUpdateFragment(notePOJO))
             }
 
             view.setOnLongClickListener {
@@ -73,8 +76,9 @@ class BindingAdapter {
                     Snackbar.LENGTH_LONG
                 )
                 snackBar.setAction("Удалить"){
-                   val reference = FirebaseDatabase.getInstance().reference.child("Notes").child(user)
-                        .child(yearString).child(monthString).child(dayString).child(notePOJO.id!!)
+                   val reference = FirebaseDatabase.getInstance().reference.child("Notes")
+                       .child(user)
+                       .child(yearString).child(monthString).child(dayString).child(notePOJO.id!!)
                     reference.removeValue()
                 }
                 snackBar.show()
@@ -85,17 +89,26 @@ class BindingAdapter {
         @SuppressLint("SetTextI18n")
         @BindingAdapter("android:topText")
         @JvmStatic
-        fun topText(view: TextView, notePOJO: NotePOJO){
+        fun topText(view: TextView, notePOJO: NoteModel){
             view.text = "Ид: ${notePOJO.id}\n" +
                     "Название: ${notePOJO.name}\n" +
                     "Тип: ${notePOJO.type}\n" +
                     "Визит: ${notePOJO.visit}"
         }
 
-        @BindingAdapter("android:urlToImage")
+        @BindingAdapter("android:logOut")
         @JvmStatic
-        fun urlToImage(view: ImageView, viewPagerPOJO: ViewPagerPOJO){
-            viewPagerPOJO.image.let { url -> Picasso.with(view.context).load(url).into(view) }
+        fun logOut(view: View, fragment: FragmentList){
+            view.setOnClickListener {
+                val builder = AlertDialog.Builder(view.context)
+                builder.setPositiveButton("Да"){_, _ ->
+                    fragment.signOut()
+                }
+                builder.setNegativeButton("Нет"){_, _ ->}
+                builder.setTitle("Выйти?")
+                builder.setMessage("Вы хотите выйти из приложения BRMLab?")
+                builder.create().show()
+            }
         }
 
         @BindingAdapter("android:emptyFab")
@@ -112,33 +125,54 @@ class BindingAdapter {
         @BindingAdapter("android:selectedItem")
         @JvmStatic
         fun selectedItem(view: ConstraintLayout, viewModel: DatabaseViewModel){
-            view.setBackgroundColor(if (viewModel.dataPOJO.isSelected) Color.GREEN else Color.WHITE)
+            val model = viewModel.dataPOJO
+
+            view.setBackgroundColor(if (model.isSelected == 1) Color.GREEN else Color.WHITE)
             view.setOnLongClickListener {
-                viewModel.dataPOJO.isSelected = !viewModel.dataPOJO.isSelected
-                if (viewModel.dataPOJO.isSelected)
-                {
-                    val model = DataBasePOJO(
-                        0,
-                        viewModel.dataPOJO.address,
-                        viewModel.dataPOJO.id,
-                        viewModel.dataPOJO.name,
-                        viewModel.dataPOJO.status,
-                        viewModel.dataPOJO.phone,
-                        viewModel.dataPOJO.specialization,
-                        viewModel.dataPOJO.category,
-                        viewModel.dataPOJO.state,
-                        viewModel.dataPOJO.employee,
-                        viewModel.dataPOJO.owner,
-                        viewModel.dataPOJO.isSelected
-                    )
-                    viewModel.insertData(model)
-                }
-                else {viewModel.deleteData(viewModel.dataPOJO)}
-                view.setBackgroundColor(if (viewModel.dataPOJO.isSelected) Color.GREEN else Color.WHITE)
+
+                model.isSelected = if (model.isSelected == 1) 0 else 1
+                view.setBackgroundColor(if (viewModel.dataPOJO.isSelected == 1) Color.GREEN else Color.WHITE)
+                viewModel.updateData(model)
                 return@setOnLongClickListener true
+            }
+            view.setOnClickListener {
+                view.findNavController().navigate(DataBaseFragmentDirections
+                    .actionDataBaseFragmentToEditFragment(
+                    model
+                ))
             }
         }
 
+        @BindingAdapter("android:multiSelection")
+        @JvmStatic
+        fun multiSelection(view: View, sharedViewModel: SharedViewModel){
+            view.setOnClickListener {
+                sharedViewModel.townAlert(view)
+            }
+        }
+
+        @BindingAdapter("android:nameToImage")
+        @JvmStatic
+        fun nameToImage(view: ImageView, noteModel: NoteModel){
+            val generator = ColorGenerator.MATERIAL
+            val drawable = TextDrawable.builder().buildRound(noteModel.name!![0].toString(), generator.randomColor)
+            view.setImageDrawable(drawable)
+        }
+        @BindingAdapter("android:timePicker")
+        @JvmStatic
+        fun timePicker(view: View, dataModel: DataBasePOJO){
+            view.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val hour = cal.get(Calendar.HOUR_OF_DAY)
+                val minute = cal.get(Calendar.MINUTE)
+
+                val picker = TimePickerDialog(view.context,
+                    TimePickerDialog.OnTimeSetListener { _, hourOfDay, _ ->
+                        dataModel.time = hourOfDay
+                    }, hour, minute, android.text.format.DateFormat.is24HourFormat(view.context))
+                picker.show()
+            }
+        }
     }
 
 

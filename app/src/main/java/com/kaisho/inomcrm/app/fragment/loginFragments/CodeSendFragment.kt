@@ -29,7 +29,6 @@ class CodeSendFragment : MvpAppCompatFragment(),
     val args: CodeSendFragmentArgs by navArgs()
     private lateinit var animButton: CircularProgressButton
     private lateinit var editText: EditText
-    private  var mCurrentUser : FirebaseUser? = null
     private lateinit var observer: Disposable
 
     @InjectPresenter
@@ -41,9 +40,6 @@ class CodeSendFragment : MvpAppCompatFragment(),
         val view =  inflater.inflate(R.layout.code_send_fragment, container, false)
         animButton = view.findViewById(R.id.code_send_fragment_btn)
         editText = view.findViewById(R.id.code_send_fragment_edit_text)
-
-        val mAuth = FirebaseAuth.getInstance()
-        mCurrentUser = mAuth.currentUser
 
         observer = RxTextView.textChanges(editText)
             .subscribe{charSequence: CharSequence ->
@@ -82,19 +78,13 @@ class CodeSendFragment : MvpAppCompatFragment(),
     }
 
     override fun openProfile() {
-        startActivity(Intent(context, SplashActivity::class.java))
-        activity?.finish()
+        val i = Intent(context, SplashActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(i)
     }
 
     override fun resendCode() {
         TODO("Not yet implemented")
-    }
-
-    override fun onStart() {
-        if (mCurrentUser != null){
-            openProfile()
-        }
-        super.onStart()
     }
 
     override fun onDestroyView() {

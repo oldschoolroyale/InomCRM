@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">InomCRM</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -14,7 +15,10 @@
     <string name="empty_text">Тут пока пусто</string>
     <string name="add_smth">Добавьте карточку из базы данных</string>
     <string name="task">Список задач</string>
+    <string name="add_doctor">Добавить врача</string>
+    <string name="add_pharmacy">Добавить аптеку</string>
     <string name="actionbar_spinner">ActionBar Spinner</string>
+    <string name="add">Добавить</string>
     <string name="pick_date">Выберите дату</string>
     <string name="data_base">База данных</string>
     <string name="data_base_title">База данных врачей\n и аптек</string>
@@ -23,7 +27,7 @@
     <string name="start_action">Начать визит</string>
     <string name="save">Сохранить</string>
     <string name="stop_action">Окончить визит</string>
-    <string name="good_day">Добрый день!</string>
+    <string name="good_day">Hayirli kun!</string>
     <string name="mission_view">Обзор задач</string>
     <string name="extras">Дополнения</string>
     <string name="stock">Остаток</string>
@@ -39,23 +43,7 @@
     <string name="doctor">Врачи</string>
     <string name="pharmacy">Аптеки</string>
     <string name="sort_by">Сортировать по</string>
-    <string name="full_name">Ф.И</string>
-    <string name="register">Зарегистрироваться</string>
-    <string name="important_text">Обьзательное к заполнению!</string>
-    <string name="add">Добавить</string>
-    <string name="add_pharmacy">Добавить аптеку</string>
-    <string name="add_doctor">Добавить врача</string>
-    <string name="search">Искать</string>
-    <string name="edit">Редактирование</string>
-
-
-    <string-array name="categoryOfMission">
-        <item>A</item>
-        <item>B</item>
-        <item>C</item>
-    </string-array>
-    <string-array name="statusOfMission">
-        <item>Активный</item>
-        <item>Не активный</item>
-    </string-array>
+    <string name="full_name">Isim sharf</string>
+    <string name="register">Registratsiya</string>
+    <string name="important_text">Toldirish mahsus!</string>
 </resources>

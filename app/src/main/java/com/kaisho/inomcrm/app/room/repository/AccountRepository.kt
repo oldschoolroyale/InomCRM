@@ -10,4 +10,12 @@ class AccountRepository(private val accountDAO: AccountDAO) {
     suspend fun insertData(accountPOJO: AccountPOJO){
         accountDAO.insertData(accountPOJO)
     }
+
+    suspend fun updateData(accountPOJO: AccountPOJO){
+        accountDAO.updateData(accountPOJO)
+    }
+
+    suspend fun deleteAll(){
+        accountDAO.deleteAll()
+    }
 }

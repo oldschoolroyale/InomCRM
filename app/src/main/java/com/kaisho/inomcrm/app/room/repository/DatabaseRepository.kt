@@ -8,16 +8,22 @@ class DatabaseRepository(private val dataBaseDAO: DataBaseDAO) {
 
     val getAllData: LiveData<List<DataBasePOJO>> = dataBaseDAO.getAllData()
 
-    suspend fun insertData(dataBasePOJO: DataBasePOJO){
-        dataBaseDAO.insertData(dataBasePOJO)
+    suspend fun insertData(dataList: DataBasePOJO){
+        dataBaseDAO.insertData(dataList)
     }
 
-    suspend fun delete(dataBasePOJO: DataBasePOJO){
-        dataBaseDAO.deleteItem(dataBasePOJO)
+    suspend fun updateData(dataBasePOJO: DataBasePOJO){
+        dataBaseDAO.updateData(dataBasePOJO)
     }
 
     suspend fun deleteAll(){
         dataBaseDAO.deleteAll()
     }
+
+
+    fun searchDatabase(): LiveData<List<DataBasePOJO>>{
+       return dataBaseDAO.searchDatabase()
+    }
+
 
 }

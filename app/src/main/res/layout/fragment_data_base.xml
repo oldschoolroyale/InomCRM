@@ -7,71 +7,148 @@
         <variable
             name="sharedViewModel"
             type="com.kaisho.inomcrm.app.viewModel.SharedViewModel" />
+        <variable
+            name="account"
+            type="com.kaisho.inomcrm.app.room.viewModel.AccountViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_data_base_recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/activity_data_base_no_data_constraint"
             android:layout_width="match_parent"
-            android:emptyDatabase="@{sharedViewModel.emptyDataBase}"
             android:layout_height="match_parent"
-            android:visibility="invisible">
+            android:background="@android:color/white">
 
-            <ImageView
-                android:id="@+id/activity_notes_no_data_view"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                android:src="@drawable/ic_baseline_cloud_off_24"
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/fragmentDataBaseCardView"
+                android:overScrollMode="never"
+                app:cardCornerRadius="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary">
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/town"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/fragmentDataBaseTownImage"
+                        android:layout_marginEnd="10dp"
+                        android:layout_centerVertical="true"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fragmentDataBaseTownText"
+                        android:textSize="16sp"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@android:color/white"
+                        android:text="@{sharedViewModel.town}"
+                        android:layout_marginTop="8dp"
+                        android:layout_toStartOf="@+id/fragmentDataBaseTownImage"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fragmentDataBaseRegionText"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/white"
+                        android:layout_below="@id/fragmentDataBaseTownText"
+                        android:layout_toStartOf="@id/fragmentDataBaseTownImage"
+                        android:layout_marginStart="10dp"
+                        android:text="@{sharedViewModel.region}"
+                        android:layout_marginTop="5dp"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="-5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/fragmentDataBaseTypeText"
+                            android:textSize="15sp"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@android:color/white"
+                            android:text="@{sharedViewModel.doctorType}"
+                            android:layout_marginTop="5dp"/>
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_data_base_recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDataBaseCardView" />
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/activity_data_base_no_data_constraint"
                 android:layout_width="match_parent"
+                android:emptyDatabase="@{sharedViewModel.emptyDataBase}"
+                android:layout_height="match_parent"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/activity_notes_no_data_view"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:src="@drawable/ic_baseline_cloud_off_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/empty_text"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_notes_no_data_view" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/activity_data_base_plan_fab"
+                android:layout_width="wrap_content"
+                android:emptyFab="@{sharedViewModel.emptyFab}"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="@string/empty_text"
-                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/activity_data_base_fb"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_notes_no_data_view" />
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_baseline_add_shopping_cart_24" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/activity_data_base_fb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:multiSelection="@{sharedViewModel}"
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_baseline_add_24" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/activity_data_base_plan_fab"
-            android:layout_width="wrap_content"
-            android:emptyFab="@{sharedViewModel.emptyFab}"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/activity_data_base_fb"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_baseline_add_shopping_cart_24" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/activity_data_base_fb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_baseline_add_24" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

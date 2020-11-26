@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.kaisho.inomcrm.app.data.ViewPagerData
 import com.kaisho.inomcrm.app.model.AccountPOJO
 import com.kaisho.inomcrm.app.room.AccountRoom
 import com.kaisho.inomcrm.app.room.repository.AccountRepository
@@ -27,6 +26,18 @@ class AccountViewModel(application: Application): AndroidViewModel(application) 
     fun insertData(accountPOJO: AccountPOJO){
         viewModelScope.launch(Dispatchers.IO){
             repository.insertData(accountPOJO)
+        }
+    }
+
+    fun updateData(accountPOJO: AccountPOJO){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.updateData(accountPOJO)
+        }
+    }
+
+    fun deleteAll(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll()
         }
     }
 }

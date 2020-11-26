@@ -9,18 +9,12 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class AccountPOJO(
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
-    var bonus: Long? = null,
+    var id: Int,
     var image: String? = null,
     var manager: String? = null,
     var medications: String? = null,
-    var medName: String? = null,
     var name: String? = null,
     var region: String? = null,
     var token: String? = null,
-    var town: String? = null,
-    var town_doctor: String? = null,
-    var town_pharmacy: String? = null,
-    var version: String? = null,
-    var workerName: String? = null
+    var town: String? = null
 ):Parcelable

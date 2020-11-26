@@ -1,6 +1,5 @@
 package com.kaisho.inomcrm.app.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,10 +7,10 @@ import com.kaisho.inomcrm.app.model.DataBasePOJO
 import com.kaisho.inomcrm.app.room.viewModel.DatabaseViewModel
 import com.kaisho.inomcrm.databinding.DataBaseListItemBinding
 
-class DataBaseAdapter(val databaseViewModel: DatabaseViewModel): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var dataList = ArrayList<DataBasePOJO>()
+class DataBaseAdapter(private val databaseViewModel: DatabaseViewModel): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var dataList = emptyList<DataBasePOJO>()
 
-    fun newList(newList: ArrayList<DataBasePOJO>){
+    fun newList(newList: List<DataBasePOJO>){
         this.dataList = newList
         notifyDataSetChanged()
     }

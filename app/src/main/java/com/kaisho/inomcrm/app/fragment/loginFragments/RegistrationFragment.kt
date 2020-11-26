@@ -2,6 +2,7 @@ package com.kaisho.inomcrm.app.fragment.loginFragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,6 @@ class RegistrationFragment : MvpAppCompatFragment(), RegistrationView {
     private lateinit var animButton : CircularProgressButton
     private lateinit var mCountryCode : EditText
     private lateinit var mPhoneNumber : EditText
-    private  var mCurrentUser : FirebaseUser? = null
     private var _binding: RegistrationFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var observer: Disposable
@@ -39,8 +39,6 @@ class RegistrationFragment : MvpAppCompatFragment(), RegistrationView {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         _binding = RegistrationFragmentBinding.inflate(inflater, container, false)
-        val mAuth = FirebaseAuth.getInstance()
-        mCurrentUser = mAuth.currentUser
 
 
         mCountryCode = binding.activityRegistrationCountryCode
@@ -76,6 +74,7 @@ class RegistrationFragment : MvpAppCompatFragment(), RegistrationView {
 
     override fun showError(textRecourse: String) {
         Toast.makeText(context, textRecourse, Toast.LENGTH_LONG).show()
+        Log.d("MyLog", textRecourse)
     }
 
     override fun openLogin(code: String) {
@@ -87,15 +86,10 @@ class RegistrationFragment : MvpAppCompatFragment(), RegistrationView {
     }
 
     override fun openMain() {
-        startActivity(Intent(context, SplashActivity::class.java))
-        activity?.finish()
-    }
+        val i = Intent(context, SplashActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(i)
 
-    override fun onStart() {
-        if (mCurrentUser != null){
-            openMain()
-        }
-        super.onStart()
     }
 
     override fun onDestroyView() {

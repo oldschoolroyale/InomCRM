@@ -3,11 +3,12 @@ package com.kaisho.inomcrm.app.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.database.*
-import com.kaisho.inomcrm.app.model.NotePOJO
+import com.kaisho.inomcrm.app.common.ListSort
+import com.kaisho.inomcrm.app.model.NoteModel
 import com.kaisho.inomcrm.app.viewModel.SharedViewModel
 import kotlin.collections.ArrayList
 
-class NoteLiveData(private val sharedViewModel: SharedViewModel) : LiveData<ArrayList<NotePOJO>>(){
+class NoteLiveData(private val sharedViewModel: SharedViewModel) : LiveData<List<NoteModel>>(){
 
 
     //Database connect
@@ -31,7 +32,7 @@ class NoteLiveData(private val sharedViewModel: SharedViewModel) : LiveData<Arra
     }
 
     private fun connectToDB(){
-        val retrieveList = ArrayList<NotePOJO>()
+        var retrieveList = ArrayList<NoteModel>()
         reference.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
 
@@ -40,8 +41,12 @@ class NoteLiveData(private val sharedViewModel: SharedViewModel) : LiveData<Arra
             override fun onDataChange(snapshot: DataSnapshot) {
                 retrieveList.clear()
                 for (i in snapshot.children){
-                    val model = i.getValue(NotePOJO::class.java)
+                    val model = i.getValue(NoteModel::class.java)
                     retrieveList.add(model!!)
+                }
+                if(retrieveList.isNotEmpty()){
+                    retrieveList = ListSort.sortList(ArrayList(retrieveList))
+                    retrieveList = ListSort.addAlphabets(retrieveList)
                 }
                 value = retrieveList
             }
